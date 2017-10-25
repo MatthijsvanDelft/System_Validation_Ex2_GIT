@@ -2,7 +2,10 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include <library.h>
+#include "library.h"
+//#include "library_for_client.h"
+//#include "library_for_server.h"
+//#include "library1.h"
 
 struct task queue0[]={
 { 1, 0,  FREE,0},       /* slot for sending call to 1 */
