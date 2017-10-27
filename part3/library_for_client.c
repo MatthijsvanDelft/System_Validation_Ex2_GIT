@@ -1,6 +1,6 @@
 /* this file contain the user side of the implementation of message passing. */
 
-#include "library.h"
+#include "library_for_client.h"
 
 void submit(struct task q[],int pos){
     q[pos].state=WAIT_XFER;
@@ -14,7 +14,7 @@ int wait_some(struct task q[],int pos[]){
     int res=0;
     while(res==0){
         for(int i=0;q[i].state!=UNUSED;i++){
-            if (q[i].state==XFER_DONE){
+            if (q[i].state==XFER_DONE || q[i].state==FREE){
                 pos[res]=i;
                 q[i].state=AVAILABLE;
                 res++;

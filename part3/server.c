@@ -2,9 +2,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include "library.h"
+//#include "library.h"
 //#include "library_for_client.h"
-//#include "library_for_server.h"
+#include "library_for_server.h"
 //#include "library1.h"
 
 struct task queue1[]={

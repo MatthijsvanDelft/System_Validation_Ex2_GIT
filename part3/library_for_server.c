@@ -1,6 +1,6 @@
 /* this file contain the user side of the implementation of message passing. */
 
-#include "library.h"
+#include "library_for_server.h"
 
 void submit(struct task q[],int pos){
     q[pos].state=WAIT_XFER;
