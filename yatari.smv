@@ -1,187 +1,259 @@
 MODULE main
 VAR
-	active  		: boolean;
-	redMovable		: boolean;
-	blackMovable	: boolean;
-	redPos   		: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	blackPos 		: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	redPosOld		: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	blackPosOld		: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	routeAvailable  : array 0..14 of boolean;
-	game			: {playing, finished};
+	active  			: boolean;
+	progress			: boolean;
+	redPos   			: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	blackPos 			: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	routeAvailable  	: array 0..15 of boolean;
+	position1			: {2, 5, 6};
+	position2			: {1, 3, 7};
+	position3			: {2, 4, 8};
+	position4			: {3, 5, 9};
+	position5			: {1, 4, 10};
+	position6			: {1, 8, 9};
+	position7			: {2, 9, 10};
+	position8			: {3, 6, 9};
+	position9			: {4, 6, 7};
+	position10			: {5, 7, 8};
 
 ASSIGN
-	init(active) := {TRUE, FALSE};
-	init(redMovable) := TRUE;
-	init(blackMovable) := TRUE;
-	init(redPos)  := 5;
-	init(blackPos) := 2;
-	init(game) := playing;
-	init(redPosOld) := 5;
-	init(blackPosOld) := 2;
+	init(active) 		:= {TRUE, FALSE};
+	init(redPos)  		:= 5;
+	init(blackPos) 		:= 2;
 
-	init(routeAvailable[0]) := TRUE;
-	init(routeAvailable[1]) := TRUE;
-	init(routeAvailable[2]) := TRUE;
-	init(routeAvailable[3]) := TRUE;
-	init(routeAvailable[4]) := TRUE;
-	init(routeAvailable[5]) := TRUE;
-	init(routeAvailable[6]) := TRUE;
-	init(routeAvailable[7]) := TRUE;
-	init(routeAvailable[8]) := TRUE;
-	init(routeAvailable[9]) := TRUE;
-	init(routeAvailable[10]) := TRUE;
-	init(routeAvailable[11]) := TRUE;
-	init(routeAvailable[12]) := TRUE;
-	init(routeAvailable[13]) := TRUE;
-	init(routeAvailable[14]) := TRUE;
-
-	next(redPosOld) := redPos;
-	next(blackPosOld) := blackPos;
+	init(routeAvailable[0]) 	:= FALSE; 
+	init(routeAvailable[1]) 	:= TRUE; 
+	init(routeAvailable[2]) 	:= TRUE; 
+	init(routeAvailable[3]) 	:= TRUE; 
+	init(routeAvailable[4]) 	:= TRUE; 
+	init(routeAvailable[5]) 	:= TRUE; 
+	init(routeAvailable[6]) 	:= TRUE;
+	init(routeAvailable[7]) 	:= TRUE; 
+	init(routeAvailable[8]) 	:= TRUE; 
+	init(routeAvailable[9]) 	:= TRUE;
+	init(routeAvailable[10]) 	:= TRUE;
+	init(routeAvailable[11]) 	:= TRUE;
+	init(routeAvailable[12]) 	:= TRUE;
+	init(routeAvailable[13]) 	:= TRUE;
+	init(routeAvailable[14]) 	:= TRUE;
+	init(routeAvailable[15]) 	:= TRUE;
+	
 
 	next(redPos) := case
-		redPos = 1  & redMovable & active 	: { 2, 5, 6};
-		redPos = 2  & redMovable & active	: { 1, 3, 7};
-		redPos = 3  & redMovable & active	: { 2, 4, 8};
-		redPos = 4  & redMovable & active	: { 3, 5, 9};
-		redPos = 5  & redMovable & active	: { 1, 4, 10};
-		redPos = 6  & redMovable & active	: { 1, 8, 9};
-		redPos = 7  & redMovable & active	: { 2, 9, 10};
-		redPos = 8  & redMovable & active	: { 3, 6, 10};
-		redPos = 9  & redMovable & active	: { 4, 6, 7};
-		redPos = 10 & redMovable & active	: { 5, 7, 8};
+		redPos = 1 & active & next(position1) = 2 & routeAvailable[1]  : next(position1);
+		redPos = 1 & active & next(position1) = 5 & routeAvailable[5]  : next(position1);
+		redPos = 1 & active & next(position1) = 6 & routeAvailable[6]  : next(position1);
+
+		redPos = 2 & active & next(position2) = 1 & routeAvailable[1]  : next(position2);
+		redPos = 2 & active & next(position2) = 3 & routeAvailable[2]  : next(position2);
+		redPos = 2 & active & next(position2) = 7 & routeAvailable[7]  : next(position2);
+
+		redPos = 3 & active & next(position3) = 2 & routeAvailable[2]  : next(position3);
+		redPos = 3 & active & next(position3) = 4 & routeAvailable[2]  : next(position3);
+		redPos = 3 & active & next(position3) = 8 & routeAvailable[8]  : next(position3);
+
+		redPos = 4 & active & next(position4) = 3 & routeAvailable[3]  : next(position4);
+		redPos = 4 & active & next(position4) = 5 & routeAvailable[4]  : next(position4);
+		redPos = 4 & active & next(position4) = 9 & routeAvailable[9]  : next(position4);
+
+		redPos = 5 & active & next(position5) = 1 & routeAvailable[5]  : next(position5);
+		redPos = 5 & active & next(position5) = 4 & routeAvailable[4]  : next(position5);
+		redPos = 5 & active & next(position5) = 10 & routeAvailable[10]  : next(position5);
+
+		redPos = 6 & active & next(position6) = 1 & routeAvailable[6]  : next(position6);
+		redPos = 6 & active & next(position6) = 8 & routeAvailable[11]  : next(position6);
+		redPos = 6 & active & next(position6) = 9 & routeAvailable[15]  : next(position6);
+
+		redPos = 7 & active & next(position7) = 2 & routeAvailable[7]  : next(position7);
+		redPos = 7 & active & next(position7) = 9 & routeAvailable[13]  : next(position7);
+		redPos = 7 & active & next(position7) = 10 & routeAvailable[12]  : next(position7);
+
+		redPos = 8 & active & next(position8) = 3 & routeAvailable[8]  : next(position8);
+		redPos = 8 & active & next(position8) = 6 & routeAvailable[11]  : next(position8);
+		redPos = 8 & active & next(position8) = 9 & routeAvailable[14]  : next(position8);
+
+		redPos = 9 & active & next(position9) = 4 & routeAvailable[9]  : next(position9);
+		redPos = 9 & active & next(position9) = 6 & routeAvailable[15]  : next(position9);
+		redPos = 9 & active & next(position9) = 7 & routeAvailable[13]  : next(position9);
+
+		redPos = 10 & active & next(position10) = 5 & routeAvailable[10]  : next(position10);
+		redPos = 10 & active & next(position10) = 7 & routeAvailable[12]  : next(position10);
+		redPos = 10 & active & next(position10) = 8 & routeAvailable[14]  : next(position10);
+
+		!active : redPos;
 		TRUE : redPos;
 	esac;
 
 	next(blackPos) := case
-		blackPos = 1  & blackMovable & !active: { 2, 5, 6};
-		blackPos = 2  & blackMovable & !active: { 1, 3, 7};
-		blackPos = 3  & blackMovable & !active: { 2, 4, 8};
-		blackPos = 4  & blackMovable & !active: { 3, 5, 9};
-		blackPos = 5  & blackMovable & !active: { 1, 4, 10};
-		blackPos = 6  & blackMovable & !active: { 1, 8, 9};
-		blackPos = 7  & blackMovable & !active: { 2, 9, 10};
-		blackPos = 8  & blackMovable & !active: { 3, 6, 10};
-		blackPos = 9  & blackMovable & !active: { 4, 6, 7};
-		blackPos = 10 & blackMovable & !active: { 5, 7, 8};
+		blackPos = 1 & !active & next(position1) = 2 & routeAvailable[1]  : next(position1);
+		blackPos = 1 & !active & next(position1) = 5 & routeAvailable[5]  : next(position1);
+		blackPos = 1 & !active & next(position1) = 6 & routeAvailable[6]  : next(position1);
+
+		blackPos = 2 & !active & next(position2) = 1 & routeAvailable[1]  : next(position2);
+		blackPos = 2 & !active & next(position2) = 3 & routeAvailable[2]  : next(position2);
+		blackPos = 2 & !active & next(position2) = 7 & routeAvailable[7]  : next(position2);
+
+		blackPos = 3 & !active & next(position3) = 2 & routeAvailable[2]  : next(position3);
+		blackPos = 3 & !active & next(position3) = 4 & routeAvailable[2]  : next(position3);
+		blackPos = 3 & !active & next(position3) = 8 & routeAvailable[8]  : next(position3);
+
+		blackPos = 4 & !active & next(position4) = 3 & routeAvailable[3]  : next(position4);
+		blackPos = 4 & !active & next(position4) = 5 & routeAvailable[4]  : next(position4);
+		blackPos = 4 & !active & next(position4) = 9 & routeAvailable[9]  : next(position4);
+
+		blackPos = 5 & !active & next(position5) = 1 & routeAvailable[5]  : next(position1);
+		blackPos = 5 & !active & next(position5) = 4 & routeAvailable[4]  : next(position1);
+		blackPos = 5 & !active & next(position5) = 10 & routeAvailable[10]  : next(position1);
+
+		blackPos = 6 & !active & next(position6) = 1 & routeAvailable[6]  : next(position6);
+		blackPos = 6 & !active & next(position6) = 8 & routeAvailable[11]  : next(position6);
+		blackPos = 6 & !active & next(position6) = 9 & routeAvailable[15]  : next(position6);
+
+		blackPos = 7 & !active & next(position7) = 2 & routeAvailable[7]  : next(position7);
+		blackPos = 7 & !active & next(position7) = 9 & routeAvailable[13]  : next(position7);
+		blackPos = 7 & !active & next(position7) = 10 & routeAvailable[12]  : next(position7);
+
+		blackPos = 8 & !active & next(position8) = 3 & routeAvailable[8]  : next(position8);
+		blackPos = 8 & !active & next(position8) = 6 & routeAvailable[11]  : next(position8);
+		blackPos = 8 & !active & next(position8) = 9 & routeAvailable[14]  : next(position8);
+
+		blackPos = 9 & !active & next(position9) = 4 & routeAvailable[9]  : next(position9);
+		blackPos = 9 & !active & next(position9) = 6 & routeAvailable[15]  : next(position9);
+		blackPos = 9 & !active & next(position9) = 7 & routeAvailable[13]  : next(position9);
+
+		blackPos = 10 & !active & next(position10) = 5 & routeAvailable[10]  : next(position10);
+		blackPos = 10 & !active & next(position10) = 7 & routeAvailable[12]  : next(position10);
+		blackPos = 10 & !active & next(position10) = 8 & routeAvailable[14]  : next(position10);
+
+		!active : blackPos;
 		TRUE : blackPos;
 	esac;
 
-	next(routeAvailable[0]) := case
-		redPosOld = 5 & redPos = 1 : FALSE;
-		redPosOld = 1 & redPos = 5 : FALSE;
-		blackPosOld = 5 & blackPos = 1 : FALSE;
-		blackPosOld = 1 & blackPos = 5 : FALSE;
-		TRUE	:	routeAvailable[0];
-	esac;
 	next(routeAvailable[1]) := case
-		redPosOld = 2 & redPos = 1 : FALSE;
-		redPosOld = 1 & redPos = 2 : FALSE;
-		blackPosOld = 2 & blackPos = 1 : FALSE;
-		blackPosOld = 1 & blackPos = 2 : FALSE;
-		TRUE	:	routeAvailable[1];
+		redPos = 1 & active & next(position1) = 2 : FALSE;
+		redPos = 2 & active & next(position2) = 1 : FALSE;
+		blackPos = 1 & !active & next(position1) = 2 : FALSE;
+		blackPos = 2 & !active & next(position2) = 1 : FALSE;
+		TRUE : routeAvailable[1];
 	esac;
 	next(routeAvailable[2]) := case
-		redPosOld = 2 & redPos = 3 : FALSE;
-		redPosOld = 3 & redPos = 2 : FALSE;
-		blackPosOld = 2 & blackPos = 3 : FALSE;
-		blackPosOld = 3 & blackPos = 2 : FALSE;
-		TRUE	:	routeAvailable[2];
+		redPos = 2 & active & next(position2) = 3 : FALSE;
+		redPos = 3 & active & next(position3) = 2 : FALSE;
+		blackPos = 2 & !active & next(position2) = 3 : FALSE;
+		blackPos = 3 & !active  & next(position3) = 2 : FALSE;
+		TRUE : routeAvailable[2];
 	esac;
 	next(routeAvailable[3]) := case
-		redPosOld = 4 & redPos = 3 : FALSE;
-		redPosOld = 3 & redPos = 4 : FALSE;
-		blackPosOld = 4 & blackPos = 3 : FALSE;
-		blackPosOld = 3 & blackPos = 4 : FALSE;
-		TRUE	:	routeAvailable[3];
+		redPos = 3 & active & next(position3) = 4 : FALSE;
+		redPos = 4 & active & next(position4) = 3 : FALSE;
+		blackPos = 3 & !active & next(position3) = 4 : FALSE;
+		blackPos = 4 & !active & next(position4) = 3 : FALSE;
+		TRUE : routeAvailable[3];
 	esac;
 	next(routeAvailable[4]) := case
-		redPosOld = 4 & redPos = 5 : FALSE;
-		redPosOld = 5 & redPos = 4 : FALSE;
-		blackPosOld = 4 & blackPos = 5 : FALSE;
-		blackPosOld = 5 & blackPos = 4 : FALSE;
-		TRUE	:	routeAvailable[4];
+		redPos = 4 & active & next(position4) = 5 : FALSE;
+		redPos = 5 & active & next(position5) = 4 : FALSE;
+		blackPos = 4 & !active & next(position4) = 5 : FALSE;
+		blackPos = 5 & !active & next(position5) = 4 : FALSE;
+		TRUE : routeAvailable[4];
 	esac;
 	next(routeAvailable[5]) := case
-		redPosOld = 1 & redPos = 6 : FALSE;
-		redPosOld = 6 & redPos = 1 : FALSE;
-		blackPosOld = 1 & blackPos = 6 : FALSE;
-		blackPosOld = 6 & blackPos = 1 : FALSE;
-		TRUE	:	routeAvailable[5];
+		redPos = 5 & active & next(position5) = 1 : FALSE;
+		redPos = 1 & active & next(position1) = 5 : FALSE;
+		blackPos = 5 & !active & next(position5) = 1 : FALSE;
+		blackPos = 1 & !active & next(position1) = 5 : FALSE;
+		TRUE : routeAvailable[5];
 	esac;
 	next(routeAvailable[6]) := case
-		redPosOld = 2 & redPos = 7 : FALSE;
-		redPosOld = 7 & redPos = 2 : FALSE;
-		blackPosOld = 2 & blackPos = 7 : FALSE;
-		blackPosOld = 7 & blackPos = 2 : FALSE;
-		TRUE	:	routeAvailable[6];
+		redPos = 6 & active & next(position6) = 1 : FALSE;
+		redPos = 1 & active & next(position1) = 6 : FALSE;
+		blackPos = 6 & !active & next(position6) = 1 : FALSE;
+		blackPos = 1 & !active & next(position1) = 6 : FALSE;
+		TRUE : routeAvailable[6];
 	esac;
 	next(routeAvailable[7]) := case
-		redPosOld = 3 & redPos = 8 : FALSE;
-		redPosOld = 8 & redPos = 3 : FALSE;
-		blackPosOld = 3 & blackPos = 8 : FALSE;
-		blackPosOld = 8 & blackPos = 3 : FALSE;
-		TRUE	:	routeAvailable[7];
+		redPos = 2 & active & next(position2) = 7 : FALSE;
+		redPos = 7 & active & next(position7) = 2 : FALSE;
+		blackPos = 2 & !active & next(position2) = 7 : FALSE;
+		blackPos = 7 & !active & next(position7) = 2 : FALSE;
+		TRUE : routeAvailable[7];
 	esac;
 	next(routeAvailable[8]) := case
-		redPosOld = 4 & redPos = 9 : FALSE;
-		redPosOld = 9 & redPos = 4 : FALSE;
-		blackPosOld = 4 & blackPos = 9 : FALSE;
-		blackPosOld = 9 & blackPos = 4 : FALSE;
-		TRUE	:	routeAvailable[8];
+		redPos = 3 & active & next(position3) = 8 : FALSE;
+		redPos = 8 & active & next(position8) = 3 : FALSE;
+		blackPos = 3 & !active & next(position3) = 8 : FALSE;
+		blackPos = 8 & !active & next(position8) = 3 : FALSE;
+		TRUE : routeAvailable[8];
 	esac;
 	next(routeAvailable[9]) := case
-		redPosOld = 5 & redPos = 10 : FALSE;
-		redPosOld = 10 & redPos = 5 : FALSE;
-		blackPosOld = 5 & blackPos = 10 : FALSE;
-		blackPosOld = 10 & blackPos = 5 : FALSE;
-		TRUE	:	routeAvailable[9];
+		redPos = 4 & active & next(position4) = 9 : FALSE;
+		redPos = 9 & active & next(position9) = 4 : FALSE;
+		blackPos = 4 & !active & next(position4) = 9 : FALSE;
+		blackPos = 9 & !active & next(position9) = 4 : FALSE;
+		TRUE : routeAvailable[9];
 	esac;
 	next(routeAvailable[10]) := case
-		redPosOld = 7 & redPos = 10 : FALSE;
-		redPosOld = 10 & redPos = 7 : FALSE;
-		blackPosOld = 7 & blackPos = 10 : FALSE;
-		blackPosOld = 10 & blackPos = 7 : FALSE;
-		TRUE	:	routeAvailable[10];
+		redPos = 5 & active & next(position5) = 10 : FALSE;
+		redPos = 10 & active & next(position10) = 5 : FALSE;
+		blackPos = 5 & !active & next(position5) = 10 : FALSE;
+		blackPos = 10 & !active & next(position10) = 5 : FALSE;
+		TRUE : routeAvailable[8];
 	esac;
 	next(routeAvailable[11]) := case
-		redPosOld = 6 & redPos = 8 : FALSE;
-		redPosOld = 8 & redPos = 6 : FALSE;
-		blackPosOld = 6 & blackPos = 8 : FALSE;
-		blackPosOld = 8 & blackPos = 6 : FALSE;
-		TRUE	:	routeAvailable[11];
+		redPos = 6 & active & next(position6) = 8 : FALSE;
+		redPos = 8 & active & next(position8) = 6 : FALSE;
+		blackPos = 6 & !active & next(position6) = 8 : FALSE;
+		blackPos = 8 & !active & next(position8) = 6 : FALSE;
+		TRUE : routeAvailable[11];
 	esac;
 	next(routeAvailable[12]) := case
-		redPosOld = 7 & redPos = 9 : FALSE;
-		redPosOld = 9 & redPos = 7 : FALSE;
-		blackPosOld = 7 & blackPos = 9 : FALSE;
-		blackPosOld = 9 & blackPos = 7 : FALSE;
-		TRUE	:	routeAvailable[12];
+		redPos = 7 & active & next(position7) = 10 : FALSE;
+		redPos = 10 & active & next(position10) = 7 : FALSE;
+		blackPos = 7 & !active & next(position7) = 10 : FALSE;
+		blackPos = 10 & !active & next(position10) = 7 : FALSE;
+		TRUE : routeAvailable[12];
 	esac;
 	next(routeAvailable[13]) := case
-		redPosOld = 10 & redPos = 8 : FALSE;
-		redPosOld = 8 & redPos = 10 : FALSE;
-		blackPosOld = 10 & blackPos = 8 : FALSE;
-		blackPosOld = 8 & blackPos = 10 : FALSE;
-		TRUE	:	routeAvailable[13];
+		redPos = 7 & active & next(position7) = 9 : FALSE;
+		redPos = 9 & active & next(position9) = 7 : FALSE;
+		blackPos = 7 & !active & next(position7) = 9 : FALSE;
+		blackPos = 9 & !active & next(position9) = 7 : FALSE;
+		TRUE : routeAvailable[13];
 	esac;
 	next(routeAvailable[14]) := case
-		redPosOld = 9 & redPos = 6 : FALSE;
-		redPosOld = 6 & redPos = 9 : FALSE;
-		blackPosOld = 9 & blackPos = 6 : FALSE;
-		blackPosOld = 6 & blackPos = 9 : FALSE;
-		TRUE	:	routeAvailable[14];
+		redPos = 8 & active & next(position8) = 10 : FALSE;
+		redPos = 10 & active & next(position10) = 8 : FALSE;
+		blackPos = 8 & !active & next(position8) = 10 : FALSE;
+		blackPos = 10 & !active & next(position10) = 8 : FALSE;
+		TRUE : routeAvailable[14];
+	esac;
+	next(routeAvailable[15]) := case
+		redPos = 9 & active & next(position9) = 6 : FALSE;
+		redPos = 6 & active & next(position6) = 9 : FALSE;
+		blackPos = 9 & !active & next(position9) = 6 : FALSE;
+		blackPos = 6 & !active & next(position6) = 9 : FALSE;
+		TRUE : routeAvailable[15];
 	esac;
 
-
-	next(game) := case 
-		redMovable = FALSE | blackMovable = FALSE : finished;
-		redMovable = TRUE & blackMovable = TRUE : playing;
-		TRUE : game;
+	next(progress) := case
+		redPos != next(redPos) : TRUE;
+		blackPos != next(blackPos) : TRUE;
+		TRUE : FALSE;
 	esac;
 
+LTLSPEC (progress U !progress)
+LTLSPEC F G(progress = FALSE)
+LTLSPEC X(active = !active)
+LTLSPEC G(redPos != blackPos)
+
+INVAR
+	progress = TRUE & redPos != blackPos;
 TRANS
 	next(active) = !active;
 
-INVAR
-	routeAvailable[redPos] = TRUE;
+
+
+
+
+
+
