@@ -6,7 +6,7 @@ VAR
 	redPos   			: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	blackPos 			: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	routeAvailable  	: array 0..15 of boolean;
-	counter				: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20};
+	toRemove			: {1,3,4,6,7,8,9,10};
 
 INVAR
 	redPos != blackPos --& progress = FALSE;
@@ -17,7 +17,6 @@ ASSIGN
 	init(blackPos) 		:= 2;
 	init(finished)		:= FALSE;
 	init(playing)		:= FALSE;
-	init(counter)		:= 0;
 
 	init(routeAvailable[0]) 	:= FALSE; 
 	init(routeAvailable[1]) 	:= TRUE; 
@@ -41,26 +40,6 @@ ASSIGN
         blackPos != next(blackPos)  & !active   : !active;
         TRUE                                    :  active;
     esac;
-
-    next(counter) := case
-    	!finished & counter = 0 : 1;
-    	!finished & counter = 1 : 2;
-    	!finished & counter = 2 : 3;
-    	!finished & counter = 3 : 4;
-    	!finished & counter = 4 : 5;
-    	!finished & counter = 5 : 6;
-    	!finished & counter = 6 : 7;
-    	!finished & counter = 7 : 8;
-    	!finished & counter = 8 : 9;
-    	!finished & counter = 9 : 10;
-    	!finished & counter = 10 : 11;
-    	!finished & counter = 11 : 12;
-    	!finished & counter = 12 : 13;
-    	!finished & counter = 13 : 14;
-    	TRUE	  : counter;
-    esac;
-
-
 
     next(playing) := TRUE;
 
@@ -294,6 +273,8 @@ ASSIGN
 	esac;
 
 	next(routeAvailable[1]) := case
+		!playing & toRemove = 1 : FALSE;
+		!playing & toRemove = 2 : FALSE;
 		redPos = 1 & next(redPos) = 2 : FALSE;
 		redPos = 2 & next(redPos) = 1 : FALSE;
 		blackPos = 1 & next(blackPos) = 2 : FALSE;
@@ -301,6 +282,8 @@ ASSIGN
 		TRUE : routeAvailable[1];
 	esac;
 	next(routeAvailable[2]) := case
+		!playing & toRemove = 2 : FALSE;
+		!playing & toRemove = 3 : FALSE;
 		redPos = 2 & next(redPos) = 3 : FALSE;
 		redPos = 3 & next(redPos) = 2 : FALSE;
 		blackPos = 2 & next(blackPos) = 3 : FALSE;
@@ -308,6 +291,8 @@ ASSIGN
 		TRUE : routeAvailable[2];
 	esac;
 	next(routeAvailable[3]) := case
+		!playing & toRemove = 3 : FALSE;
+		!playing & toRemove = 4 : FALSE;
 		redPos = 3 & next(redPos) = 4 : FALSE;
 		redPos = 4 & next(redPos) = 3 : FALSE;
 		blackPos = 3 & next(blackPos) = 4 : FALSE;
@@ -315,6 +300,8 @@ ASSIGN
 		TRUE : routeAvailable[3];
 	esac;
 	next(routeAvailable[4]) := case
+		!playing & toRemove = 4 : FALSE;
+		!playing & toRemove = 5 : FALSE;
 		redPos = 4 & next(redPos) = 5 : FALSE;
 		redPos = 5 & next(redPos) = 4 : FALSE;
 		blackPos = 4 & next(blackPos) = 5 : FALSE;
@@ -322,6 +309,8 @@ ASSIGN
 		TRUE : routeAvailable[4];
 	esac;
 	next(routeAvailable[5]) := case
+		!playing & toRemove = 1 : FALSE;
+		!playing & toRemove = 5 : FALSE;
 		redPos = 5 & next(redPos) = 1 : FALSE;
 		redPos = 1 & next(redPos) = 5 : FALSE;
 		blackPos = 5 & next(blackPos) = 1 : FALSE;
@@ -329,6 +318,8 @@ ASSIGN
 		TRUE : routeAvailable[5];
 	esac;
 	next(routeAvailable[6]) := case
+		!playing & toRemove = 1 : FALSE;
+		!playing & toRemove = 6 : FALSE;
 		redPos = 6 & next(redPos) = 1 : FALSE;
 		redPos = 1 & next(redPos) = 6 : FALSE;
 		blackPos = 6 & next(blackPos) = 1 : FALSE;
@@ -336,6 +327,8 @@ ASSIGN
 		TRUE : routeAvailable[6];
 	esac;
 	next(routeAvailable[7]) := case
+		!playing & toRemove = 2 : FALSE;
+		!playing & toRemove = 7 : FALSE;
 		redPos = 2 & next(redPos) = 7 : FALSE;
 		redPos = 7 & next(redPos) = 2 : FALSE;
 		blackPos = 2 & next(blackPos) = 7 : FALSE;
@@ -343,6 +336,8 @@ ASSIGN
 		TRUE : routeAvailable[7];
 	esac;
 	next(routeAvailable[8]) := case
+		!playing & toRemove = 3 : FALSE;
+		!playing & toRemove = 8 : FALSE;
 		redPos = 3 & next(redPos) = 8 : FALSE;
 		redPos = 8 & next(redPos) = 3 : FALSE;
 		blackPos = 3 & next(blackPos) = 8 : FALSE;
@@ -350,6 +345,8 @@ ASSIGN
 		TRUE : routeAvailable[8];
 	esac;
 	next(routeAvailable[9]) := case
+		!playing & toRemove = 4 : FALSE;
+		!playing & toRemove = 9 : FALSE;
 		redPos = 4 & next(redPos) = 9 : FALSE;
 		redPos = 9 & next(redPos) = 4 : FALSE;
 		blackPos = 4 & next(blackPos) = 9 : FALSE;
@@ -357,6 +354,8 @@ ASSIGN
 		TRUE : routeAvailable[9];
 	esac;
 	next(routeAvailable[10]) := case
+		!playing & toRemove = 5 : FALSE;
+		!playing & toRemove = 10 : FALSE;
 		redPos = 5 & next(redPos) = 10 : FALSE;
 		redPos = 10 & next(redPos) = 5 : FALSE;
 		blackPos = 5 & next(blackPos) = 10 : FALSE;
@@ -364,6 +363,8 @@ ASSIGN
 		TRUE : routeAvailable[10];
 	esac;
 	next(routeAvailable[11]) := case
+		!playing & toRemove = 6 : FALSE;
+		!playing & toRemove = 8 : FALSE;
 		redPos = 6 & next(redPos) = 8 : FALSE;
 		redPos = 8 & next(redPos) = 6 : FALSE;
 		blackPos = 6 & next(blackPos) = 8 : FALSE;
@@ -371,6 +372,8 @@ ASSIGN
 		TRUE : routeAvailable[11];
 	esac;
 	next(routeAvailable[12]) := case
+		!playing & toRemove = 7 : FALSE;
+		!playing & toRemove = 10 : FALSE;
 		redPos = 7 & next(redPos) = 10 : FALSE;
 		redPos = 10 & next(redPos) = 7 : FALSE;
 		blackPos = 7 & next(blackPos) = 10 : FALSE;
@@ -378,6 +381,8 @@ ASSIGN
 		TRUE : routeAvailable[12];
 	esac;
 	next(routeAvailable[13]) := case
+		!playing & toRemove = 7 : FALSE;
+		!playing & toRemove = 9 : FALSE;
 		redPos = 7 & next(redPos) = 9 : FALSE;
 		redPos = 9 & next(redPos) = 7 : FALSE;
 		blackPos = 7 & next(blackPos) = 9 : FALSE;
@@ -385,6 +390,8 @@ ASSIGN
 		TRUE : routeAvailable[13];
 	esac;
 	next(routeAvailable[14]) := case
+		!playing & toRemove = 8 : FALSE;
+		!playing & toRemove = 10 : FALSE;
 		redPos = 8 & next(redPos) = 10 : FALSE;
 		redPos = 10 & next(redPos) = 8 : FALSE;
 		blackPos = 8 & next(blackPos) = 10 : FALSE;
@@ -392,6 +399,8 @@ ASSIGN
 		TRUE : routeAvailable[14];
 	esac;
 	next(routeAvailable[15]) := case
+		!playing & toRemove = 6 : FALSE;
+		!playing & toRemove = 9 : FALSE;
 		redPos = 9 & next(redPos) = 6 : FALSE;
 		redPos = 6 & next(redPos) = 9 : FALSE;
 		blackPos = 9 & next(blackPos) = 6 : FALSE;
@@ -417,9 +426,6 @@ LTLSPEC (!finished U finished)
 LTLSPEC F G(finished = TRUE)
 LTLSPEC X(active = !active) -> finished
 LTLSPEC G(redPos != blackPos)
-
---LTLSPEC G(finished -> counter != 6)
-LTLSPEC G(finished -> counter != 13)
 
 COMPUTE
 	MAX[finished = FALSE & playing = FALSE, finished = TRUE & playing = TRUE]
