@@ -1,0 +1,378 @@
+MODULE main
+VAR
+    red: {1,2,3,4,5,6,7,8,9,10};
+    black: {1,2,3,4,5,6,7,8,9,10};
+    Playerswitch: boolean;
+    Taken12: boolean;
+    Taken15: boolean;
+    Taken16: boolean;
+    Taken23: boolean;
+    Taken27: boolean;
+    Taken34: boolean;
+    Taken38: boolean;
+    Taken45: boolean;
+    Taken49: boolean;
+    Taken510: boolean;
+    Taken68: boolean;
+    Taken69: boolean;
+    Taken79: boolean;
+    Taken710: boolean;
+    Taken810: boolean;
+    played: boolean;
+    finish: boolean;
+INVAR
+    red != black;
+SPEC A [ !finish U !Playerswitch]
+ASSIGN
+    init(red):= 5;
+    init(black):= 2;
+    init(finish):= FALSE;
+    init(played):= FALSE;
+    init(Playerswitch) := {FALSE,TRUE}; --TRUE: red begins
+    init(Taken12) := FALSE;
+    init(Taken15) := FALSE;
+    init(Taken16) := FALSE;
+    init(Taken23) := FALSE;
+    init(Taken27) := FALSE;
+    init(Taken34) := FALSE;
+    init(Taken38) := FALSE;
+    init(Taken45) := FALSE;
+    init(Taken49) := FALSE;
+    init(Taken510) := FALSE;
+    init(Taken68) := FALSE;
+    init(Taken69) := FALSE;
+    init(Taken79) := FALSE;
+    init(Taken710) := FALSE;
+    init(Taken810) := FALSE;
+    next(Playerswitch) :=
+        case
+            red != next(red)      & Playerswitch    : !Playerswitch;
+            black != next(black)  & !Playerswitch   : !Playerswitch;
+            TRUE                                    :  Playerswitch;
+        esac;
+    next(played) := TRUE;
+    next(red):= case
+                    Playerswitch :  case
+                                        red = 1: case
+                                                    !Taken12 & !Taken15 & !Taken16: {2 , 5 , 6};
+                                                    !Taken12 & !Taken15 & Taken16: {2 , 5};
+                                                    !Taken12 & Taken15 & !Taken16: {2 , 6};
+                                                    Taken12 & !Taken15 & !Taken16: {5 , 6};
+                                                    Taken12 & Taken15 & !Taken16 & black != 6: {6};
+                                                    Taken12 & !Taken15 & Taken16 & black != 5: {5};
+                                                    !Taken12 & Taken15 & Taken16 & black != 2: {2};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 2: case
+                                                    !Taken23 & !Taken12 & !Taken27: {3 , 1 , 7};
+                                                    !Taken23 & !Taken12 & Taken27: {3 , 1};
+                                                    !Taken23 & Taken12 & !Taken27: {3 , 7};
+                                                    Taken23 & !Taken12 & !Taken27: {1 , 7};
+                                                    Taken23 & Taken12 & !Taken27 & black != 7: {7};
+                                                    Taken23 & !Taken12 & Taken27 & black != 1: {1};
+                                                    !Taken23 & Taken12 & Taken27 & black != 3: {3};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 3: case
+                                                    !Taken34 & !Taken23 & !Taken38: {4 , 2 , 8};
+                                                    !Taken34 & !Taken23 & Taken38: {4 , 2};
+                                                    !Taken34 & Taken23 & !Taken38: {4 , 8};
+                                                    Taken34 & !Taken23 & !Taken38: {2 , 8};
+                                                    Taken34 & Taken23 & !Taken38 & black != 8: {8};
+                                                    Taken34 & !Taken23 & Taken38 & black != 2: {2};
+                                                    !Taken34 & Taken23 & Taken38 & black != 4: {4};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 4: case
+                                                    !Taken45 & !Taken34 & !Taken49: {5 , 3 , 9};
+                                                    !Taken45 & !Taken34 & Taken49: {5 , 3};
+                                                    !Taken45 & Taken34 & !Taken49: {5 , 9};
+                                                    Taken45 & !Taken34 & !Taken49: {3 , 9};
+                                                    Taken45 & Taken34 & !Taken49 & black != 9: {9};
+                                                    Taken45 & !Taken34 & Taken49 & black != 3: {3};
+                                                    !Taken45 & Taken34 & Taken49 & black != 5: {5};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 5: case
+                                                    !Taken15 & !Taken45 & !Taken510: {1 , 4 , 10};
+                                                    !Taken15 & !Taken45 & Taken510: {1 , 4};
+                                                    !Taken15 & Taken45 & !Taken510: {1 , 10};
+                                                    Taken15 & !Taken45 & !Taken510: {4 , 10};
+                                                    Taken15 & Taken45 & !Taken510 & black != 10: {10};
+                                                    Taken15 & !Taken45 & Taken510 & black != 4: {4};
+                                                    !Taken15 & Taken45 & Taken510 & black != 1: {1};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 6: case
+                                                    !Taken68 & !Taken16 & !Taken69: {8 , 1 , 9};
+                                                    !Taken68 & !Taken16 & Taken69: {8 , 1};
+                                                    !Taken68 & Taken16 & !Taken69: {8 , 9};
+                                                    Taken68 & !Taken16 & !Taken69: {1 , 9};
+                                                    Taken68 & Taken16 & !Taken69 & black != 9: {9};
+                                                    Taken68 & !Taken16 & Taken69 & black != 1: {1};
+                                                    !Taken68 & Taken16 & Taken69 & black != 8: {8};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 7: case
+                                                    !Taken710 & !Taken27 & !Taken79: {10 , 2 , 9};
+                                                    !Taken710 & !Taken27 & Taken79: {10 , 2};
+                                                    !Taken710 & Taken27 & !Taken79: {10 , 9};
+                                                    Taken710 & !Taken27 & !Taken79: {2 , 9};
+                                                    Taken710 & Taken27 & !Taken79 & black != 9: {9};
+                                                    Taken710 & !Taken27 & Taken79 & black != 2: {2};
+                                                    !Taken710 & Taken27 & Taken79 & black != 10: {10};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 8: case
+                                                    !Taken68 & !Taken38 & !Taken810: {6 , 3 , 10};
+                                                    !Taken68 & !Taken38 & Taken810: {6 , 3};
+                                                    !Taken68 & Taken38 & !Taken810: {6 , 10};
+                                                    Taken68 & !Taken38 & !Taken810: {3 , 10};
+                                                    Taken68 & Taken38 & !Taken810 & black != 10: {10};
+                                                    Taken68 & !Taken38 & Taken810 & black != 3: {3};
+                                                    !Taken68 & Taken38 & Taken810 & black != 6: {6};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 9: case
+                                                    !Taken49 & !Taken69 & !Taken79: {4 , 6 , 7};
+                                                    !Taken49 & !Taken69 & Taken79: {4 , 6};
+                                                    !Taken49 & Taken69 & !Taken79: {4 , 7};
+                                                    Taken49 & !Taken69 & !Taken79: {6 , 7};
+                                                    Taken49 & Taken69 & !Taken79 & black != 7: {7};
+                                                    Taken49 & !Taken69 & Taken79 & black != 6: {6};
+                                                    !Taken49 & Taken69 & Taken79 & black != 4: {4};
+                                                    TRUE : red;
+                                                esac;
+                                        red = 10: case
+                                                    !Taken510 & !Taken710 & !Taken810: {5  ,  7  ,  8};
+                                                    !Taken510 & !Taken710 & Taken810: {5  ,  7};
+                                                    !Taken510 & Taken710 & !Taken810: {5  ,  8};
+                                                    Taken510 & !Taken710 & !Taken810: {7  ,  8};
+                                                    Taken510 & Taken710 & !Taken810 & black != 8: {8} ;
+                                                    Taken510 & !Taken710 & Taken810 & black != 7: {7} ;
+                                                    !Taken510 & Taken710 & Taken810 & black != 5: {5} ;
+                                                    TRUE : red;
+                                                esac;
+                                        TRUE : red;
+                                    esac;
+                                TRUE: red;
+                            esac;
+            next(black):= case
+                    !Playerswitch :  case
+                                        black = 1: case
+                                                    !Taken12 & !Taken15 & !Taken16: {2 , 5 , 6};
+                                                    !Taken12 & !Taken15 & Taken16: {2 , 5};
+                                                    !Taken12 & Taken15 & !Taken16: {2 , 6};
+                                                    Taken12 & !Taken15 & !Taken16: {5 , 6};
+                                                    Taken12 & Taken15 & !Taken16 & red != 6: {6};
+                                                    Taken12 & !Taken15 & Taken16 & red != 5: {5};
+                                                    !Taken12 & Taken15 & Taken16 & red != 2: {2};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 2: case
+                                                    !Taken23 & !Taken12 & !Taken27: {3 , 1 , 7};
+                                                    !Taken23 & !Taken12 & Taken27: {3 , 1};
+                                                    !Taken23 & Taken12 & !Taken27: {3 , 7};
+                                                    Taken23 & !Taken12 & !Taken27: {1 , 7};
+                                                    Taken23 & Taken12 & !Taken27 & red != 7: {7};
+                                                    Taken23 & !Taken12 & Taken27 & red != 1: {1};
+                                                    !Taken23 & Taken12 & Taken27 & red != 3: {3};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 3: case
+                                                    !Taken34 & !Taken23 & !Taken38: {4 , 2 , 8};
+                                                    !Taken34 & !Taken23 & Taken38: {4 , 2};
+                                                    !Taken34 & Taken23 & !Taken38: {4 , 8};
+                                                    Taken34 & !Taken23 & !Taken38: {2 , 8};
+                                                    Taken34 & Taken23 & !Taken38 & red != 8: {8};
+                                                    Taken34 & !Taken23 & Taken38 & red != 2: {2};
+                                                    !Taken34 & Taken23 & Taken38 & red != 4: {4};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 4: case
+                                                    !Taken45 & !Taken34 & !Taken49: {5 , 3 , 9};
+                                                    !Taken45 & !Taken34 & Taken49: {5 , 3};
+                                                    !Taken45 & Taken34 & !Taken49: {5 , 9};
+                                                    Taken45 & !Taken34 & !Taken49: {3 , 9};
+                                                    Taken45 & Taken34 & !Taken49 & red !=  9: {9};
+                                                    Taken45 & !Taken34 & Taken49 & red !=  3: {3};
+                                                    !Taken45 & Taken34 & Taken49 & red !=  5: {5};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 5: case
+                                                    !Taken15 & !Taken45 & !Taken510: {1 , 4 , 10};
+                                                    !Taken15 & !Taken45 & Taken510: {1 , 4};
+                                                    !Taken15 & Taken45 & !Taken510: {1 , 10};
+                                                    Taken15 & !Taken45 & !Taken510: {4 , 10};
+                                                    Taken15 & Taken45 & !Taken510 & red != 10: {10};
+                                                    Taken15 & !Taken45 & Taken510 & red != 4: {4};
+                                                    !Taken15 & Taken45 & Taken510 & red != 1: {1};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 6: case
+                                                    !Taken68 & !Taken16 & !Taken69: {8 , 1 , 9};
+                                                    !Taken68 & !Taken16 & Taken69: {8 , 1};
+                                                    !Taken68 & Taken16 & !Taken69: {8 , 9};
+                                                    Taken68 & !Taken16 & !Taken69: {1 , 9};
+                                                    Taken68 & Taken16 & !Taken69 & red != 9: {9};
+                                                    Taken68 & !Taken16 & Taken69 & red != 1: {1};
+                                                    !Taken68 & Taken16 & Taken69 & red != 8: {8};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 7: case
+                                                    !Taken710 & !Taken27 & !Taken79: {10 , 2 , 9};
+                                                    !Taken710 & !Taken27 & Taken79: {10 , 2};
+                                                    !Taken710 & Taken27 & !Taken79: {10 , 9};
+                                                    Taken710 & !Taken27 & !Taken79: {2 , 9};
+                                                    Taken710 & Taken27 & !Taken79 & red != 9: {9};
+                                                    Taken710 & !Taken27 & Taken79 & red != 2: {2};
+                                                    !Taken710 & Taken27 & Taken79 & red != 10: {10};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 8: case
+                                                    !Taken68 & !Taken38 & !Taken810: {6 , 3 , 10};
+                                                    !Taken68 & !Taken38 & Taken810: {6 , 3};
+                                                    !Taken68 & Taken38 & !Taken810: {6 , 10};
+                                                    Taken68 & !Taken38 & !Taken810: {3 , 10};
+                                                    Taken68 & Taken38 & !Taken810 & red != 10: {10};
+                                                    Taken68 & !Taken38 & Taken810 & red != 3: {3};
+                                                    !Taken68 & Taken38 & Taken810 & red != 6: {6};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 9: case
+                                                    !Taken49 & !Taken69 & !Taken79: {4 , 6 , 7};
+                                                    !Taken49 & !Taken69 & Taken79: {4 , 6};
+                                                    !Taken49 & Taken69 & !Taken79: {4 , 7};
+                                                    Taken49 & !Taken69 & !Taken79: {6 , 7};
+                                                    Taken49 & Taken69 & !Taken79 & red != 7: {7};
+                                                    Taken49 & !Taken69 & Taken79 & red != 6: {6};
+                                                    !Taken49 & Taken69 & Taken79 & red != 4: {4};
+                                                    TRUE : black;
+                                                esac;
+                                        black = 10: case
+                                                    !Taken510 & !Taken710 & !Taken810: {5  ,  7  ,  8};
+                                                    !Taken510 & !Taken710 & Taken810: {5  ,  7};
+                                                    !Taken510 & Taken710 & !Taken810: {5  ,  8};
+                                                    Taken510 & !Taken710 & !Taken810: {7  ,  8};
+                                                    Taken510 & Taken710 & !Taken810 & red != 8: {8} ;
+                                                    Taken510 & !Taken710 & Taken810 & red != 7: {7} ;
+                                                    !Taken510 & Taken710 & Taken810 & red != 5: {5} ;
+                                                    TRUE : black;
+                                                esac;
+                                        TRUE : black;
+                                    esac;
+                                TRUE: black;
+                            esac;
+    next(Taken12) := case
+                red = 1 & next(red) = 2 : TRUE;
+                red = 2 & next(red) = 1 : TRUE;
+                black = 1 & next(black) = 2 : TRUE;
+                black = 2 & next(black) = 1 : TRUE;
+                TRUE: Taken12;
+            esac;
+    next(Taken15) := case
+                red = 1 & next(red) = 5 : TRUE;
+                red = 5 & next(red) = 1 : TRUE;
+                black = 1 & next(black) = 5 : TRUE;
+                black = 5 & next(black) = 1 : TRUE;
+                TRUE: Taken15;
+            esac;
+    next(Taken16) := case
+                red = 1 & next(red) = 6 : TRUE;
+                red = 6 & next(red) = 1 : TRUE;
+                black = 1 & next(black) = 6 : TRUE;
+                black = 6 & next(black) = 1 : TRUE;
+                TRUE: Taken16;
+            esac;
+    next(Taken23) := case
+                red = 2 & next(red) = 3 : TRUE;
+                red = 3 & next(red) = 2 : TRUE;
+                black = 2 & next(black) = 3 : TRUE;
+                black = 3 & next(black) = 2 : TRUE;
+                TRUE: Taken23;
+            esac;
+    next(Taken27) := case
+                red = 2 & next(red) = 7 : TRUE;
+                red = 7 & next(red) = 2 : TRUE;
+                black = 2 & next(black) = 7 : TRUE;
+                black = 7 & next(black) = 2 : TRUE;
+                TRUE: Taken27;
+            esac;
+    next(Taken34) := case
+                red = 3 & next(red) = 4 : TRUE;
+                red = 4 & next(red) = 3 : TRUE;
+                black = 3 & next(black) = 4 : TRUE;
+                black = 4 & next(black) = 3 : TRUE;
+                TRUE: Taken34;
+            esac;
+    next(Taken38) := case
+                red = 3 & next(red) = 8 : TRUE;
+                red = 8 & next(red) = 3 : TRUE;
+                black = 3 & next(black) = 8 : TRUE;
+                black = 8 & next(black) = 3 : TRUE;
+                TRUE: Taken38;
+            esac;
+    next(Taken45) := case
+                red = 4 & next(red) = 5 : TRUE;
+                red = 5 & next(red) = 4 : TRUE;
+                black = 4 & next(black) = 5 : TRUE;
+                black = 5 & next(black) = 4 : TRUE;
+                TRUE: Taken45;
+            esac;
+    next(Taken49) := case
+                red = 4 & next(red) = 9 : TRUE;
+                red = 9 & next(red) = 4 : TRUE;
+                black = 4 & next(black) = 9 : TRUE;
+                black = 9 & next(black) = 4 : TRUE;
+                TRUE: Taken49;
+            esac;
+    next(Taken510) := case
+                red = 5 & next(red) = 10 : TRUE;
+                red = 10 & next(red) = 5 : TRUE;
+                black = 5 & next(black) = 10 : TRUE;
+                black = 10 & next(black) = 5 : TRUE;
+                TRUE: Taken510;
+            esac;
+    next(Taken68) := case
+                red = 6 & next(red) = 8 : TRUE;
+                red = 8 & next(red) = 6 : TRUE;
+                black = 6 & next(black) = 8 : TRUE;
+                black = 8 & next(black) = 6 : TRUE;
+                TRUE: Taken68;
+            esac;
+    next(Taken69) := case
+                red = 6 & next(red) = 9 : TRUE;
+                red = 9 & next(red) = 6 : TRUE;
+                black = 6 & next(black) = 9 : TRUE;
+                black = 9 & next(black) = 6 : TRUE;
+                TRUE: Taken69;
+            esac;
+     next(Taken79) := case
+                red = 7 & next(red) = 9 : TRUE;
+                red = 9 & next(red) = 7 : TRUE;
+                black = 7 & next(black) = 9 : TRUE;
+                black = 9 & next(black) = 7 : TRUE;
+                TRUE: Taken79;
+            esac;   
+     next(Taken710) := case
+                red = 7 & next(red) = 10 : TRUE;
+                red = 10 & next(red) = 7 : TRUE;
+                black = 7 & next(black) = 10 : TRUE;
+                black = 10 & next(black) = 7 : TRUE;
+                TRUE: Taken710;
+            esac;  
+     next(Taken810) := case
+                red = 8 & next(red) = 10 : TRUE;
+                red = 10 & next(red) = 8 : TRUE;
+                black = 8 & next(black) = 10 : TRUE;
+                black = 10 & next(black) = 8 : TRUE;
+                TRUE: Taken810;
+            esac;
+    next(finish):= case
+                red = next(red) & Playerswitch: TRUE;
+                black = next(black) & !Playerswitch: TRUE;
+                TRUE: finish;
+            esac;
+COMPUTE
+    --MIN[finish = FALSE & played = FALSE, finish = TRUE & played = TRUE]
+    MAX[finish = FALSE & played = FALSE, finish = TRUE & played = TRUE]

@@ -2,6 +2,7 @@ MODULE main
 VAR
 	active  			: boolean;
 	progress			: boolean;
+	playing				: boolean;
 	redPos   			: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	blackPos 			: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	routeAvailable  	: array 0..15 of boolean;
@@ -16,10 +17,15 @@ VAR
 	position9			: {4, 6, 7};
 	position10			: {5, 7, 8};
 
+INVAR
+	redPos != blackPos --& progress = FALSE;
+
 ASSIGN
 	init(active) 		:= {TRUE, FALSE};
 	init(redPos)  		:= 5;
 	init(blackPos) 		:= 2;
+	init(progress)		:= TRUE;
+	init(playing)		:= FALSE;
 
 	init(routeAvailable[0]) 	:= FALSE; 
 	init(routeAvailable[1]) 	:= TRUE; 
@@ -37,7 +43,14 @@ ASSIGN
 	init(routeAvailable[13]) 	:= TRUE;
 	init(routeAvailable[14]) 	:= TRUE;
 	init(routeAvailable[15]) 	:= TRUE;
-	
+
+	next(active) := case
+        redPos != next(redPos) & active    		: !active;
+        blackPos != next(blackPos)  & !active   : !active;
+        TRUE                                    :  active;
+    esac;
+
+	next(playing) := TRUE;
 
 	next(redPos) := case
 		redPos = 1 & active & next(position1) = 2 & routeAvailable[1]  : next(position1);
@@ -49,7 +62,7 @@ ASSIGN
 		redPos = 2 & active & next(position2) = 7 & routeAvailable[7]  : next(position2);
 
 		redPos = 3 & active & next(position3) = 2 & routeAvailable[2]  : next(position3);
-		redPos = 3 & active & next(position3) = 4 & routeAvailable[2]  : next(position3);
+		redPos = 3 & active & next(position3) = 4 & routeAvailable[3]  : next(position3);
 		redPos = 3 & active & next(position3) = 8 & routeAvailable[8]  : next(position3);
 
 		redPos = 4 & active & next(position4) = 3 & routeAvailable[3]  : next(position4);
@@ -80,7 +93,6 @@ ASSIGN
 		redPos = 10 & active & next(position10) = 7 & routeAvailable[12]  : next(position10);
 		redPos = 10 & active & next(position10) = 8 & routeAvailable[14]  : next(position10);
 
-		!active : redPos;
 		TRUE : redPos;
 	esac;
 
@@ -94,16 +106,16 @@ ASSIGN
 		blackPos = 2 & !active & next(position2) = 7 & routeAvailable[7]  : next(position2);
 
 		blackPos = 3 & !active & next(position3) = 2 & routeAvailable[2]  : next(position3);
-		blackPos = 3 & !active & next(position3) = 4 & routeAvailable[2]  : next(position3);
+		blackPos = 3 & !active & next(position3) = 4 & routeAvailable[3]  : next(position3);
 		blackPos = 3 & !active & next(position3) = 8 & routeAvailable[8]  : next(position3);
 
 		blackPos = 4 & !active & next(position4) = 3 & routeAvailable[3]  : next(position4);
 		blackPos = 4 & !active & next(position4) = 5 & routeAvailable[4]  : next(position4);
 		blackPos = 4 & !active & next(position4) = 9 & routeAvailable[9]  : next(position4);
 
-		blackPos = 5 & !active & next(position5) = 1 & routeAvailable[5]  : next(position1);
-		blackPos = 5 & !active & next(position5) = 4 & routeAvailable[4]  : next(position1);
-		blackPos = 5 & !active & next(position5) = 10 & routeAvailable[10]  : next(position1);
+		blackPos = 5 & !active & next(position5) = 1 & routeAvailable[5]  : next(position5);
+		blackPos = 5 & !active & next(position5) = 4 & routeAvailable[4]  : next(position5);
+		blackPos = 5 & !active & next(position5) = 10 & routeAvailable[10]  : next(position5);
 
 		blackPos = 6 & !active & next(position6) = 1 & routeAvailable[6]  : next(position6);
 		blackPos = 6 & !active & next(position6) = 8 & routeAvailable[11]  : next(position6);
@@ -125,7 +137,6 @@ ASSIGN
 		blackPos = 10 & !active & next(position10) = 7 & routeAvailable[12]  : next(position10);
 		blackPos = 10 & !active & next(position10) = 8 & routeAvailable[14]  : next(position10);
 
-		!active : blackPos;
 		TRUE : blackPos;
 	esac;
 
@@ -197,7 +208,7 @@ ASSIGN
 		redPos = 10 & active & next(position10) = 5 : FALSE;
 		blackPos = 5 & !active & next(position5) = 10 : FALSE;
 		blackPos = 10 & !active & next(position10) = 5 : FALSE;
-		TRUE : routeAvailable[8];
+		TRUE : routeAvailable[10];
 	esac;
 	next(routeAvailable[11]) := case
 		redPos = 6 & active & next(position6) = 8 : FALSE;
@@ -235,25 +246,24 @@ ASSIGN
 		TRUE : routeAvailable[15];
 	esac;
 
-	next(progress) := case
-		redPos != next(redPos) : TRUE;
-		blackPos != next(blackPos) : TRUE;
-		TRUE : FALSE;
-	esac;
+	next(progress):= case
+            redPos = next(redPos) & active: FALSE;
+            blackPos = next(blackPos) & !active: FALSE;
+            TRUE: progress;
+        esac;
+
+next(routeAvailable[0]) := routeAvailable[0];
+
+SPEC AF(!progress)
+
 
 LTLSPEC (progress U !progress)
 LTLSPEC F G(progress = FALSE)
 LTLSPEC X(active = !active)
 LTLSPEC G(redPos != blackPos)
 
-INVAR
-	progress = TRUE & redPos != blackPos;
-TRANS
-	next(active) = !active;
 
 
-
-
-
-
-
+COMPUTE
+	--MAX[progress = TRUE & playing = FALSE, progress = FALSE & playing = TRUE]
+	MIN[progress = TRUE, progress = FALSE]
