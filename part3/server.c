@@ -1,11 +1,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <assert.h>
 
 //#include "library.h"
 //#include "library_for_client.h"
-#include "library_for_server.h"
-//#include "library1.h"
+//#include "library_for_server.h"
+#include "library1.h"
 
 struct task queue1[]={
 {-1,-1,  FREE,0},      /* slot for receiving call form 0 */
@@ -14,23 +15,28 @@ struct task queue1[]={
 };
 
 void do_work(){
-    int pos[2];
-    int K=wait_some(queue1,pos);
+    int posArray[2];
+    int K = wait_some(queue1, posArray);
     for(int i=0;i<K;i++){
-        if (pos[i]==0) {
+
+        if (posArray[i] == 0) {
             int tmp=queue1[0].arg;
             printf("thr1: got %d\n",tmp);
-            while(queue1[1].state!=FREE){
+
+            assert(queue1[1].state == FREE);
+            while(queue1[1].state != FREE){
                 printf("thr1: nested loop\n");
                 do_work();
             }
-            queue1[1].arg=tmp;
-            submit(queue1,1);
-            submit(queue1,0);
+            queue1[1].arg = tmp;
+            submit(queue1, 1);
+            submit(queue1, 0);
             printf("thr1: return %d\n",tmp);
         }
-        if (pos[i]==1) {
-            acknowledge(queue1,1);
+
+        //Is not always acknowledged.  
+        if (posArray[i] == 1) {
+            acknowledge(queue1, 1);
         }
     }
 }
@@ -42,4 +48,11 @@ void* server(void*arg){
         do_work();
     }
 }
+
+#ifdef SEPERATE_TEST
+void main()
+{
+    server(NULL);
+}
+#endif
 

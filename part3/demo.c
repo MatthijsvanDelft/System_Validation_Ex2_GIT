@@ -54,11 +54,11 @@ int main(int argc,char*argv[]){
 		exit(1);
 	}
     if (pthread_create(&thr0,NULL,client,NULL)) {
-        printf("startup of io daemon failed");
+        printf("startup of io client failed");
 		exit(1);
 	}
     if (pthread_create(&thr1,NULL,server,NULL)) {
-        printf("startup of io daemon failed");
+        printf("startup of io server failed");
 		exit(1);
 	}
     pthread_join(thr0,NULL);

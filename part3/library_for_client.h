@@ -8,6 +8,8 @@
 #define FREE      4
 #define UNUSED    0
 
+//#define SEPERATE_TEST
+
 struct task {
     int dest_worker;  // [SEND] The worker number of the intended receiver of the message/task.
                       // [RECV] set to -1 to indicate a buffer used for receiving.
@@ -44,7 +46,7 @@ extern void acknowledge(struct task q[],int pos);
     the array pos. Therefor, the array pos has to be big
     enough to hold the maximum number of new transfers possible.
  */
-extern int wait_some(struct task q[],int pos[]);
+extern int wait_some(struct task q[],int posArray[]);
 
 #endif
 
