@@ -7,6 +7,7 @@ VAR
 	blackPos 			: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	routeAvailable  	: array 0..15 of boolean;
 	toRemove			: {1,3,4,6,7,8,9,10};
+	counter				: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20};
 
 INVAR
 	redPos != blackPos --& progress = FALSE;
@@ -17,6 +18,7 @@ ASSIGN
 	init(blackPos) 		:= 2;
 	init(finished)		:= FALSE;
 	init(playing)		:= FALSE;
+	init(counter)		:= 0;
 
 	init(routeAvailable[0]) 	:= FALSE; 
 	init(routeAvailable[1]) 	:= TRUE; 
@@ -35,15 +37,26 @@ ASSIGN
 	init(routeAvailable[14]) 	:= TRUE;
 	init(routeAvailable[15]) 	:= TRUE;
 
-	next(active) := case
-        redPos != next(redPos) & active    		: !active;
-        blackPos != next(blackPos)  & !active   : !active;
-        TRUE                                    :  active;
-    esac;
-
     next(playing) := TRUE;
 
-	
+    next(counter) := case
+    	!finished & counter = 0 : 1;
+    	!finished & counter = 1 : 2;
+    	!finished & counter = 2 : 3;
+    	!finished & counter = 3 : 4;
+    	!finished & counter = 4 : 5;
+    	!finished & counter = 5 : 6;
+    	!finished & counter = 6 : 7;
+    	!finished & counter = 7 : 8;
+    	!finished & counter = 8 : 9;
+    	!finished & counter = 9 : 10;
+    	!finished & counter = 10 : 11;
+    	!finished & counter = 11 : 12;
+    	!finished & counter = 12 : 13;
+    	!finished & counter = 13 : 14;
+    	TRUE	  : counter;
+    esac;
+
 	next(redPos) := case
 		redPos = 1 & active : case
 			routeAvailable[1] & routeAvailable[5] & routeAvailable[6] : {2, 5, 6};
@@ -408,6 +421,12 @@ ASSIGN
 		TRUE : routeAvailable[15];
 	esac;
 
+	next(active) := case
+        redPos != next(redPos) & active    		: !active;
+        blackPos != next(blackPos)  & !active   : !active;
+        TRUE                                    :  active;
+    esac;
+
 	next(finished):= case
                 redPos = next(redPos) & active: TRUE;
                 blackPos = next(blackPos) & !active: TRUE;
@@ -427,6 +446,9 @@ LTLSPEC F G(finished = TRUE)
 LTLSPEC X(active = !active) -> finished
 LTLSPEC G(redPos != blackPos)
 
+LTLSPEC G(finished -> counter != 3)
+--LTLSPEC G(finished -> counter != 12)
+
 COMPUTE
-	MAX[finished = FALSE & playing = FALSE, finished = TRUE & playing = TRUE]
-	--MIN[finished = FALSE & playing = FALSE, finished = TRUE & playing = TRUE]
+	--MAX[finished = FALSE & playing = FALSE, finished = TRUE & playing = TRUE]
+	MIN[finished = FALSE & playing = FALSE, finished = TRUE & playing = TRUE]

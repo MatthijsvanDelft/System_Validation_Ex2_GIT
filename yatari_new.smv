@@ -9,7 +9,7 @@ VAR
 	counter				: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20};
 
 INVAR
-	redPos != blackPos --& progress = FALSE;
+	redPos != blackPos;
 
 ASSIGN
 	init(active) 		:= {TRUE,FALSE};
@@ -36,12 +36,6 @@ ASSIGN
 	init(routeAvailable[14]) 	:= TRUE;
 	init(routeAvailable[15]) 	:= TRUE;
 
-	next(active) := case
-        redPos != next(redPos) & active    		: !active;
-        blackPos != next(blackPos)  & !active   : !active;
-        TRUE                                    :  active;
-    esac;
-
     next(counter) := case
     	!finished & counter = 0 : 1;
     	!finished & counter = 1 : 2;
@@ -60,11 +54,8 @@ ASSIGN
     	TRUE	  : counter;
     esac;
 
-
-
     next(playing) := TRUE;
 
-	
 	next(redPos) := case
 		redPos = 1 & active : case
 			routeAvailable[1] & routeAvailable[5] & routeAvailable[6] : {2, 5, 6};
@@ -399,13 +390,19 @@ ASSIGN
 		TRUE : routeAvailable[15];
 	esac;
 
+	next(active) := case
+        redPos != next(redPos) & active    		: !active;
+        blackPos != next(blackPos)  & !active   : !active;
+        TRUE                                    :  active;
+    esac;
+
 	next(finished):= case
                 redPos = next(redPos) & active: TRUE;
                 blackPos = next(blackPos) & !active: TRUE;
                 TRUE: finished;
         esac;
 
-	next(routeAvailable[0]) := routeAvailable[0];
+	next(routeAvailable[0]) := routeAvailable[0];		--Do not toggle routeAvailable[0], not used in program
 
 SPEC AF(finished)
 SPEC EG(finished -> active)
@@ -419,7 +416,7 @@ LTLSPEC X(active = !active) -> finished
 LTLSPEC G(redPos != blackPos)
 
 --LTLSPEC G(finished -> counter != 6)
-LTLSPEC G(finished -> counter != 13)
+--LTLSPEC G(finished -> counter != 13)
 
 COMPUTE
 	MAX[finished = FALSE & playing = FALSE, finished = TRUE & playing = TRUE]
